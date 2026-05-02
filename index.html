@@ -1,318 +1,386 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZiJun — AI Assistants</title>
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%237c3aed'/%3E%3Ctext x='50' y='70' font-size='50' text-anchor='middle' fill='white' font-family='monospace'%3E%7B%7D%3C/text%3E%3C/svg%3E">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZiJun — AI Assistants</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%237c3aed'/%3E%3Ctext x='50' y='70' font-size='50' text-anchor='middle' fill='white' font-family='monospace'%3E%7B%7D%3C/text%3E%3C/svg%3E">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* ─── RESET ─────────────────────────────── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-            min-height: 100vh;
-            color: #eef2ff;
-            padding: 2rem 1.5rem;
-        }
+    /* ─── BASE ─────────────────────────────── */
+    :root {
+      --purple:     #7c3aed;
+      --purple-hi:  #a855f7;
+      --purple-mid: #8b5cf6;
+      --bg-start:   #0f0c29;
+      --bg-mid:     #302b63;
+      --bg-end:     #24243e;
+      --surface:    rgba(255,255,255,0.05);
+      --border:     rgba(255,255,255,0.1);
+      --text:       #eef2ff;
+      --muted:      #9ca3af;
+      --green:      #4ade80;
+    }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, var(--bg-start), var(--bg-mid), var(--bg-end));
+      min-height: 100vh;
+      color: var(--text);
+      padding: 2rem 1.5rem;
+    }
 
-        /* Header */
-        .header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
+    .container { max-width: 1200px; margin: 0 auto; }
 
-        .logo {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, #7c3aed, #a855f7);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1rem;
-            font-size: 2rem;
-            color: white;
-            box-shadow: 0 10px 25px rgba(124,58,237,0.4);
-            animation: pulse 2s infinite;
-        }
+    /* ─── HEADER ────────────────────────────── */
+    .header { text-align: center; margin-bottom: 3rem; }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(124,58,237,0.7); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(124,58,237,0); }
-        }
+    .logo {
+      width: 70px; height: 70px;
+      background: linear-gradient(135deg, var(--purple), var(--purple-hi));
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1rem;
+      font-size: 2rem; color: white;
+      box-shadow: 0 10px 25px rgba(124,58,237,0.4);
+      animation: pulse 2s infinite;
+    }
 
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #fff, #c084fc);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin-bottom: 0.5rem;
-        }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1);    box-shadow: 0 0 0 0   rgba(124,58,237,0.7); }
+      70%       { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(124,58,237,0);   }
+    }
 
-        .subtitle {
-            color: #9ca3af;
-            font-size: 1rem;
-        }
+    h1 {
+      font-size: 2.5rem; font-weight: 700;
+      background: linear-gradient(135deg, #fff, #c084fc);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      margin-bottom: 0.5rem;
+    }
 
-        /* Grid */
-        .gpt-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 1.8rem;
-            margin-bottom: 3rem;
-        }
+    .subtitle { color: var(--muted); font-size: 1rem; }
 
-        /* Card */
-        .gpt-card {
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 1.5rem;
-            padding: 1.8rem;
-            border: 1px solid rgba(255,255,255,0.1);
-            transition: all 0.3s ease;
-        }
+    /* ─── GRID ──────────────────────────────── */
+    /* Fixed: was repeat(auto-fit, minmax(320px,1fr)) which caused the WIP card
+       to span full width when it was the only item in the last row.
+       Now using a fixed 3-col grid that wraps cleanly. */
+    .gpt-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.8rem;
+      margin-bottom: 1.8rem;
+    }
 
-        .gpt-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(124,58,237,0.5);
-            box-shadow: 0 20px 35px -15px rgba(0,0,0,0.5);
-        }
+    /* ─── CARD ──────────────────────────────── */
+    .gpt-card {
+      background: var(--surface);
+      backdrop-filter: blur(10px);
+      border-radius: 1.5rem;
+      padding: 1.8rem;
+      border: 1px solid var(--border);
+      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+      display: flex; flex-direction: column; /* so footer link sticks to bottom */
+    }
 
-        .card-icon {
-            width: 55px;
-            height: 55px;
-            background: linear-gradient(135deg, #7c3aed, #a855f7);
-            border-radius: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            margin-bottom: 1.2rem;
-        }
+    .gpt-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(124,58,237,0.5);
+      box-shadow: 0 20px 35px -15px rgba(0,0,0,0.5);
+    }
 
-        .gpt-name {
-            font-size: 1.4rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
+    /* WIP card */
+    .gpt-card.wip-card {
+      opacity: 0.85;
+      border: 1px dashed rgba(124,58,237,0.5);
+    }
 
-        .gpt-desc {
-            color: #cbd5e1;
-            font-size: 0.9rem;
-            line-height: 1.5;
-            margin-bottom: 1.2rem;
-        }
+    .card-icon {
+      width: 55px; height: 55px;
+      background: linear-gradient(135deg, var(--purple), var(--purple-hi));
+      border-radius: 1rem;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem;
+      margin-bottom: 1.2rem;
+      flex-shrink: 0;
+    }
 
-        .features {
-            list-style: none;
-            margin-bottom: 1.5rem;
-        }
+    .card-icon.grey { background: linear-gradient(135deg, #4b5563, #6b7280); }
 
-        .features li {
-            font-size: 0.85rem;
-            color: #a78bfa;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
+    .gpt-name {
+      font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem;
+      display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;
+    }
 
-        .features li i {
-            font-size: 0.7rem;
-            color: #4ade80;
-        }
+    .wip-badge {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.05em;
+      background: #f59e0b; color: #1a1a2e;
+      padding: 0.15rem 0.55rem; border-radius: 20px;
+    }
 
-        .gpt-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: rgba(124,58,237,0.2);
-            padding: 0.7rem 1.2rem;
-            border-radius: 2rem;
-            text-decoration: none;
-            color: #c084fc;
-            font-weight: 500;
-            font-size: 0.9rem;
-            transition: all 0.2s;
-            border: 1px solid rgba(124,58,237,0.3);
-        }
+    .gpt-desc {
+      color: #cbd5e1; font-size: 0.9rem; line-height: 1.5;
+      margin-bottom: 1.2rem; flex: 1; /* pushes link to bottom */
+    }
 
-        .gpt-link:hover {
-            background: #7c3aed;
-            color: white;
-            border-color: #7c3aed;
-        }
+    .features {
+      list-style: none; margin-bottom: 1.5rem;
+    }
 
-        /* Back to Hub */
-        .back-link {
-            text-align: center;
-            margin-top: 2rem;
-        }
+    .features li {
+      font-size: 0.85rem; color: #a78bfa;
+      margin-bottom: 0.5rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
 
-        .back-link a {
-            color: #9ca3af;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: color 0.2s;
-        }
+    .features li i { font-size: 0.7rem; color: var(--green); }
+    .features li i.fa-tools,
+    .features li i.fa-code-branch,
+    .features li i.fa-lightbulb { color: var(--muted); }
 
-        .back-link a:hover {
-            color: #c084fc;
-        }
+    /* Fixed: gpt-link was only styled for <a> but the WIP card used a <div>.
+       Now using .gpt-link for real links and .gpt-link-disabled for placeholders. */
+    .gpt-link, .gpt-link-disabled {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(124,58,237,0.2);
+      padding: 0.7rem 1.2rem;
+      border-radius: 2rem;
+      font-weight: 500; font-size: 0.9rem;
+      border: 1px solid rgba(124,58,237,0.3);
+      text-decoration: none;
+      width: fit-content;
+      margin-top: auto;
+    }
 
-        /* Footer */
-        .footer {
-            text-align: center;
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255,255,255,0.05);
-            font-size: 0.8rem;
-            color: #6b7280;
-        }
+    .gpt-link { color: #c084fc; transition: background 0.2s, color 0.2s, border-color 0.2s; cursor: pointer; }
+    .gpt-link:hover { background: var(--purple); color: white; border-color: var(--purple); }
 
-        @media (max-width: 700px) {
-            h1 { font-size: 1.8rem; }
-            .gpt-grid { gap: 1.2rem; }
-            .gpt-card { padding: 1.5rem; }
-        }
-    </style>
+    .gpt-link-disabled { color: var(--muted); cursor: default; }
+
+    /* ─── BACK LINK ─────────────────────────── */
+    .back-link { text-align: center; margin-top: 2rem; }
+    .back-link a {
+      color: var(--muted); text-decoration: none;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      transition: color 0.2s;
+    }
+    .back-link a:hover { color: #c084fc; }
+
+    /* ─── FEEDBACK FORM ─────────────────────── */
+    .feedback-card {
+      background: var(--surface);
+      backdrop-filter: blur(10px);
+      border-radius: 1.5rem;
+      padding: 1.8rem;
+      margin: 2rem 0 1rem;
+      border: 1px solid var(--border);
+    }
+
+    .feedback-header {
+      display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.2rem;
+    }
+
+    .feedback-header i { color: #c084fc; font-size: 1.5rem; }
+    .feedback-header h3 { color: white; font-weight: 600; }
+
+    .feedback-desc { color: #cbd5e1; font-size: 0.9rem; margin-bottom: 1.2rem; }
+
+    /* Fixed: <form> tag used as the form element; this is valid HTML — no changes
+       needed here since this isn't inside a React artifact. */
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem; margin-bottom: 1rem;
+    }
+
+    .form-select, .form-textarea {
+      padding: 0.7rem; border-radius: 0.8rem;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(0,0,0,0.3); color: white;
+      font-size: 0.9rem; font-family: inherit;
+      width: 100%;
+    }
+
+    .form-textarea { resize: vertical; margin-bottom: 1rem; }
+
+    /* Fixed: submit button had no type="submit" fallback class — using .form-submit */
+    .form-submit {
+      background: linear-gradient(135deg, var(--purple), var(--purple-hi));
+      border: none; padding: 0.7rem 1.5rem; border-radius: 2rem;
+      color: white; font-weight: 600; cursor: pointer; width: 100%;
+      font-size: 0.95rem;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+    .form-submit:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    .form-note { color: #6b7280; font-size: 0.7rem; margin-top: 0.8rem; text-align: center; }
+
+    /* ─── FOOTER ────────────────────────────── */
+    .footer {
+      text-align: center; margin-top: 3rem; padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      font-size: 0.8rem; color: #6b7280;
+    }
+    .footer .heart { color: #f43f5e; }
+
+    /* ─── RESPONSIVE ────────────────────────── */
+    @media (max-width: 900px) {
+      .gpt-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 1.8rem; }
+      .gpt-grid { grid-template-columns: 1fr; gap: 1.2rem; }
+      .gpt-card { padding: 1.5rem; }
+    }
+  </style>
 </head>
 <body>
 <div class="container">
-    <div class="header">
-        <div class="logo">
-            <i class="fas fa-robot"></i>
-        </div>
-        <h1>My AI Assistants</h1>
-        <p class="subtitle">Custom GPTs built to solve real problems — faster, smarter, no manual math.</p>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo"><i class="fas fa-robot"></i></div>
+    <h1>My AI Assistants</h1>
+    <p class="subtitle">Custom GPTs built to solve real problems — faster, smarter, no manual math.</p>
+  </div>
+
+  <!-- GPT GRID -->
+  <div class="gpt-grid">
+
+    <!-- GPT 4: 应用文案助手 (NEW) -->
+    <div class="gpt-card">
+      <div class="card-icon"><i class="fas fa-pen-nib"></i></div>
+      <div class="gpt-name">应用文案助手 <span style="font-size:0.7rem;color:#a78bfa;font-weight:400;">(Copywriting Assistant)</span></div>
+      <div class="gpt-desc">用于起草内容的AI文案助手——更智慧、更高效地撰写，每次都能精准把握恰当语气。</div>
+      <ul class="features">
+        <li><i class="fas fa-check-circle"></i> 起草申请文案及描述</li>
+        <li><i class="fas fa-check-circle"></i> 针对不同受众进行语气适配写作</li>
+        <li><i class="fas fa-check-circle"></i> 支持中文（简体）</li>
+        <li><i class="fas fa-check-circle"></i> 快速起草→精细润色工作流程</li>
+      </ul>
+      <a href="https://chatgpt.com/g/g-69f5f018dad48191ae86ca2c40c6c9d7-ying-yong-wen-an-zhu-shou-cao-gao" class="gpt-link" target="_blank" rel="noopener">
+        <i class="fa fa-check-circle"></i> Try it →
+      </a>
     </div>
 
-    <div class="gpt-grid">
-        <!-- GPT 1: KH AI Assistant for Quote -->
-        <div class="gpt-card">
-            <div class="card-icon">
-                <i class="fas fa-calculator"></i>
-            </div>
-            <div class="gpt-name">KH AI Assistant for Quote</div>
-            <div class="gpt-desc">Sales assistant that calculates signage quotations instantly — banner, LED, tarpaulin, custom materials.</div>
-            <ul class="features">
-                <li><i class="fas fa-check-circle"></i> Tarpaulin Solvent / UV</li>
-                <li><i class="fas fa-check-circle"></i> 3D LED letters with rounding</li>
-                <li><i class="fas fa-check-circle"></i> 3 customer tiers (Standard / Regular / VIP)</li>
-                <li><i class="fas fa-check-circle"></i> Minimum charges & design fees</li>
-            </ul>
-            <a href="https://chatgpt.com/g/g-69b66d402d808191b150134427fb1116-kh-ai-assistant-for-quote" class="gpt-link" target="_blank"><i class="fab fa-chatgpt"></i> Try it →</a>
-        </div>
-
-        <!-- GPT 2: ZiJun HUB Assistant -->
-        <div class="gpt-card">
-            <div class="card-icon">
-                <i class="fas fa-compass"></i>
-            </div>
-            <div class="gpt-name">ZiJun HUB Assistant</div>
-            <div class="gpt-desc">Portfolio guide — helps visitors find projects, tools, and links to my work.</div>
-            <ul class="features">
-                <li><i class="fas fa-check-circle"></i> Navigate portfolios (Google Drive / Website)</li>
-                <li><i class="fas fa-check-circle"></i> Open calculators & tools</li>
-                <li><i class="fas fa-check-circle"></i> Return to main HUB</li>
-                <li><i class="fas fa-check-circle"></i> Simple, no extra fluff</li>
-            </ul>
-            <a href="https://chatgpt.com/g/g-69b67a347e488191a4681abb18776a44-zijun-hub-assistant" class="gpt-link" target="_blank"><i class="fab fa-chatgpt"></i> Try it →</a>
-        </div>
-
-        <!-- GPT 3: KH Workorder - WhatsApp -->
-        <div class="gpt-card">
-            <div class="card-icon">
-                <i class="fab fa-whatsapp"></i>
-            </div>
-            <div class="gpt-name">KH Workorder - WhatsApp</div>
-            <div class="gpt-desc">WhatsApp-based work order assistant — helps create, track, and manage job orders directly in chat.</div>
-            <ul class="features">
-                <li><i class="fas fa-check-circle"></i> Create new work orders via WhatsApp</li>
-                <li><i class="fas fa-check-circle"></i> Track job status</li>
-                <li><i class="fas fa-check-circle"></i> Fast order entry for signage jobs</li>
-                <li><i class="fas fa-check-circle"></i> Integrated with KH workflow</li>
-            </ul>
-            <a href="https://chatgpt.com/g/g-69b6129fe1108191afeb3d47d42fa88e-kh-workorder" class="gpt-link" target="_blank"><i class="fab fa-chatgpt"></i> Try it →</a>
-        </div>
-    </div>
-            <!-- Coming Soon - WIP -->
-        <div class="gpt-card" style="opacity: 0.85; border: 1px dashed rgba(124,58,237,0.5);">
-            <div class="card-icon" style="background: linear-gradient(135deg, #4b5563, #6b7280);">
-                <i class="fas fa-hard-hat"></i>
-            </div>
-            <div class="gpt-name">Coming Soon <span style="font-size: 0.7rem; background: #f59e0b; color: #1a1a2e; padding: 2px 8px; border-radius: 20px; margin-left: 8px;">WIP</span></div>
-            <div class="gpt-desc">Another AI assistant is being built. Something useful, something practical — just not ready yet.</div>
-            <ul class="features">
-                <li><i class="fas fa-tools"></i> Under construction</li>
-                <li><i class="fas fa-code-branch"></i> Work in progress</li>
-                <li><i class="fas fa-lightbulb"></i> Idea stage → prototype → launch</li>
-            </ul>
-            <div style="background: rgba(255,255,255,0.05); padding: 0.7rem 1.2rem; border-radius: 2rem; text-align: center; color: #9ca3af; font-size: 0.85rem;">
-                <i class="fas fa-hourglass-half"></i> Stay tuned
-            </div>
-        </div>
-
-    <div class="back-link">
-        <a href="https://zijun198.github.io/">
-            <i class="fas fa-arrow-left"></i> Back to Main HUB
-        </a>
+    <!-- GPT 2: ZiJun HUB Assistant -->
+    <div class="gpt-card">
+      <div class="card-icon"><i class="fas fa-compass"></i></div>
+      <div class="gpt-name">ZiJun HUB Assistant</div>
+      <div class="gpt-desc">Portfolio guide — helps visitors find projects, tools, and links to my work.</div>
+      <ul class="features">
+        <li><i class="fas fa-check-circle"></i> Navigate portfolios (Google Drive / Website)</li>
+        <li><i class="fas fa-check-circle"></i> Open calculators &amp; tools</li>
+        <li><i class="fas fa-check-circle"></i> Return to main HUB</li>
+        <li><i class="fas fa-check-circle"></i> Simple, no extra fluff</li>
+      </ul>
+      <a href="https://chatgpt.com/g/g-69b67a347e488191a4681abb18776a44-zijun-hub-assistant" class="gpt-link" target="_blank" rel="noopener">
+        <i class="fa fa-check-circle"></i> Try it →
+      </a>
     </div>
 
-        <!-- Feedback Form -->
-    <div style="background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border-radius: 1.5rem; padding: 1.8rem; margin: 2rem 0 1rem; border: 1px solid rgba(255,255,255,0.1);">
-        <div style="display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.2rem;">
-            <i class="fas fa-comment-dots" style="color: #c084fc; font-size: 1.5rem;"></i>
-            <h3 style="color: white; font-weight: 600; margin: 0;">Help Me Improve</h3>
-        </div>
-        <p style="color: #cbd5e1; font-size: 0.9rem; margin-bottom: 1.2rem;">Which AI did you try? Was it helpful? Your feedback is anonymous and helps me make these tools better.</p>
-        
-        <form action="https://formspree.io/f/mlgagyzk" method="POST">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
-                <select name="which_ai" required style="padding: 0.7rem; border-radius: 0.8rem; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: white; font-size: 0.9rem;">
-                    <option value="" disabled selected>Which AI did you try?</option>
-                    <option value="KH AI Assistant for Quote">KH AI Assistant for Quote</option>
-                    <option value="ZiJun HUB Assistant">ZiJun HUB Assistant</option>
-                    <option value="KH Workorder - WhatsApp">KH Workorder - WhatsApp</option>
-                    <option value="Just browsing / Not tried yet">Just browsing / Not tried yet</option>
-                </select>
-                
-                <select name="rating" required style="padding: 0.7rem; border-radius: 0.8rem; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: white; font-size: 0.9rem;">
-                    <option value="" disabled selected>Was it helpful?</option>
-                    <option value="Very helpful">👍 Very helpful</option>
-                    <option value="Somewhat helpful">🤔 Somewhat helpful</option>
-                    <option value="Not helpful">👎 Not helpful</option>
-                </select>
-            </div>
-            
-            <textarea name="feedback" rows="2" placeholder="What worked? What didn't? Suggestions? (optional)" style="width: 100%; padding: 0.8rem; border-radius: 0.8rem; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: white; font-family: inherit; font-size: 0.9rem; margin-bottom: 1rem; resize: vertical;"></textarea>
-            
-            <button type="submit" style="background: linear-gradient(135deg, #7c3aed, #a855f7); border: none; padding: 0.7rem 1.5rem; border-radius: 2rem; color: white; font-weight: 600; cursor: pointer; transition: all 0.2s; width: 100%;">
-                <i class="fas fa-paper-plane"></i> Send Feedback
-            </button>
-        </form>
-        <p style="color: #6b7280; font-size: 0.7rem; margin-top: 0.8rem; text-align: center;">No email required. Anonymous. Takes 10 seconds.</p>
+    <!-- GPT 3: KH Workorder - WhatsApp -->
+    <div class="gpt-card">
+      <div class="card-icon"><i class="fab fa-whatsapp"></i></div>
+      <div class="gpt-name">KH Workorder — WhatsApp</div>
+      <div class="gpt-desc">WhatsApp-based work order assistant — helps create, track, and manage job orders directly in chat.</div>
+      <ul class="features">
+        <li><i class="fas fa-check-circle"></i> Create new work orders via WhatsApp</li>
+        <li><i class="fas fa-check-circle"></i> Track job status</li>
+        <li><i class="fas fa-check-circle"></i> Fast order entry for signage jobs</li>
+        <li><i class="fas fa-check-circle"></i> Integrated with KH workflow</li>
+      </ul>
+      <a href="https://chatgpt.com/g/g-69b6129fe1108191afeb3d47d42fa88e-kh-workorder" class="gpt-link" target="_blank" rel="noopener">
+        <i class="fa fa-check-circle"></i> Try it →
+      </a>
     </div>
-    <div class="footer">
-        <p>Built with <i class="fas fa-heart" style="color:#f43f5e;"></i> and AI — 3 custom GPTs, 0 manual math</p>
+
+    <!-- GPT 1: KH AI Assistant for Quote -->
+    <div class="gpt-card">
+      <div class="card-icon"><i class="fas fa-calculator"></i></div>
+      <div class="gpt-name">KH AI Assistant for Quote</div>
+      <div class="gpt-desc">Sales assistant that calculates signage quotations instantly — banner, LED, tarpaulin, custom materials.</div>
+      <ul class="features">
+        <li><i class="fas fa-check-circle"></i> Tarpaulin Solvent / UV</li>
+        <li><i class="fas fa-check-circle"></i> 3D LED letters with rounding</li>
+        <li><i class="fas fa-check-circle"></i> 3 customer tiers (Standard / Regular / VIP)</li>
+        <li><i class="fas fa-check-circle"></i> Minimum charges &amp; design fees</li>
+      </ul>
+      <a href="https://chatgpt.com/g/g-69b66d402d808191b150134427fb1116-kh-ai-assistant-for-quote" class="gpt-link" target="_blank" rel="noopener">
+        <i class="fa fa-check-circle"></i> Try it →
+      </a>
     </div>
-    
+
+    <!-- WIP Card -->
+    <div class="gpt-card wip-card">
+      <div class="card-icon grey"><i class="fas fa-hard-hat"></i></div>
+      <div class="gpt-name">Coming Soon <span class="wip-badge">WIP</span></div>
+      <div class="gpt-desc">Another AI assistant is being built. Something useful, something practical — just not ready yet.</div>
+      <ul class="features">
+        <li><i class="fas fa-tools"></i> Under construction</li>
+        <li><i class="fas fa-code-branch"></i> Work in progress</li>
+        <li><i class="fas fa-lightbulb"></i> Idea stage → prototype → launch</li>
+      </ul>
+      <div class="gpt-link-disabled">
+        <i class="fas fa-hourglass-half"></i> Stay tuned
+      </div>
+    </div>
+
+  </div><!-- /gpt-grid -->
+
+  <!-- BACK LINK -->
+  <div class="back-link">
+    <a href="https://zijun198.github.io/">
+      <i class="fas fa-arrow-left"></i> Back to Main HUB
+    </a>
+  </div>
+
+  <!-- FEEDBACK FORM -->
+  <div class="feedback-card">
+    <div class="feedback-header">
+      <i class="fas fa-comment-dots"></i>
+      <h3>Help Me Improve</h3>
+    </div>
+    <p class="feedback-desc">Which AI did you try? Was it helpful? Your feedback is anonymous and helps me make these tools better.</p>
+
+    <form action="https://formspree.io/f/mlgagyzk" method="POST">
+      <div class="form-row">
+        <select name="which_ai" required class="form-select">
+          <option value="" disabled selected>Which AI did you try?</option>
+          <option value="KH AI Assistant for Quote">KH AI Assistant for Quote</option>
+          <option value="ZiJun HUB Assistant">ZiJun HUB Assistant</option>
+          <option value="KH Workorder - WhatsApp">KH Workorder — WhatsApp</option>
+          <option value="Copywriting Assistant">应用文案助手 (Copywriting Assistant)</option>
+          <option value="Just browsing / Not tried yet">Just browsing / Not tried yet</option>
+        </select>
+
+        <select name="rating" required class="form-select">
+          <option value="" disabled selected>Was it helpful?</option>
+          <option value="Very helpful">👍 Very helpful</option>
+          <option value="Somewhat helpful">🤔 Somewhat helpful</option>
+          <option value="Not helpful">👎 Not helpful</option>
+        </select>
+      </div>
+
+      <textarea name="feedback" rows="2" class="form-textarea"
+        placeholder="What worked? What didn't? Suggestions? (optional)"></textarea>
+
+      <button type="submit" class="form-submit">
+        <i class="fas fa-paper-plane"></i> Send Feedback
+      </button>
+    </form>
+    <p class="form-note">No email required. Anonymous. Takes 10 seconds.</p>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p>Built with <i class="fas fa-heart heart"></i> and AI — 4 custom GPTs, 0 manual math</p>
+  </div>
+
 </div>
 </body>
 </html>
