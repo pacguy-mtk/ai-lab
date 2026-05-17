@@ -3,399 +3,751 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ZiJun — AI Assistants</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%237c3aed'/%3E%3Ctext x='50' y='70' font-size='50' text-anchor='middle' fill='white' font-family='monospace'%3E%7B%7D%3C/text%3E%3C/svg%3E">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Public directory of ZiJun's practical AI assistants for quotes, work orders, copywriting, gold calculations, and hub navigation.">
+  <title>ZiJun AI Assistants</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2306111f'/%3E%3Cpath d='M23 58c5-20 18-31 33-31 12 0 21 7 21 18 0 15-13 26-32 26H22l8-13h16c8 0 15-4 15-12 0-5-4-8-10-8-8 0-15 6-19 20h-9Z' fill='%2367e8f9'/%3E%3C/svg%3E">
   <style>
-    /* ─── RESET ─────────────────────────────── */
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-    /* ─── BASE ─────────────────────────────── */
     :root {
-      --purple:     #7c3aed;
-      --purple-hi:  #a855f7;
-      --purple-mid: #8b5cf6;
-      --bg-start:   #0f0c29;
-      --bg-mid:     #302b63;
-      --bg-end:     #24243e;
-      --surface:    rgba(255,255,255,0.05);
-      --border:     rgba(255,255,255,0.1);
-      --text:       #eef2ff;
-      --muted:      #9ca3af;
-      --green:      #4ade80;
+      --bg: #07111f;
+      --bg-2: #0d1b2d;
+      --ink: #f8fafc;
+      --soft: #dbeafe;
+      --muted: #9fb0c7;
+      --line: rgba(255, 255, 255, 0.14);
+      --panel: rgba(255, 255, 255, 0.065);
+      --panel-strong: rgba(255, 255, 255, 0.105);
+      --cyan: #67e8f9;
+      --blue: #60a5fa;
+      --violet: #c4b5fd;
+      --green: #86efac;
+      --gold: #fcd34d;
+      --danger: #fda4af;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { min-height: 100%; background: var(--bg); }
 
     body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, var(--bg-start), var(--bg-mid), var(--bg-end));
       min-height: 100vh;
-      color: var(--text);
-      padding: 2rem 1.5rem;
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 15% 8%, rgba(103, 232, 249, 0.2), transparent 28rem),
+        radial-gradient(circle at 88% 5%, rgba(196, 181, 253, 0.18), transparent 30rem),
+        linear-gradient(145deg, var(--bg) 0%, var(--bg-2) 48%, #101827 100%);
     }
 
-    .container { max-width: 1200px; margin: 0 auto; }
+    a { color: inherit; }
 
-    /* ─── HEADER ────────────────────────────── */
-    .header { text-align: center; margin-bottom: 3rem; }
-
-    .logo {
-      width: 70px; height: 70px;
-      background: linear-gradient(135deg, var(--purple), var(--purple-hi));
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 1rem;
-      font-size: 2rem; color: white;
-      box-shadow: 0 10px 25px rgba(124,58,237,0.4);
-      animation: pulse 2s infinite;
+    .site {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 42px;
     }
 
-    @keyframes pulse {
-      0%, 100% { transform: scale(1);    box-shadow: 0 0 0 0   rgba(124,58,237,0.7); }
-      70%       { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(124,58,237,0);   }
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 10px 0 46px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      font-weight: 850;
+      letter-spacing: 0;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      color: #06111f;
+      background: linear-gradient(135deg, var(--cyan), var(--violet) 62%, var(--gold));
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28);
+    }
+
+    .nav-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 40px;
+      padding: 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--soft);
+      text-decoration: none;
+      background: rgba(255, 255, 255, 0.055);
+      transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
+    }
+
+    .nav-link:hover {
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(103, 232, 249, 0.38);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.12fr) minmax(280px, 0.88fr);
+      gap: clamp(28px, 6vw, 70px);
+      align-items: end;
+      margin-bottom: 42px;
+    }
+
+    .eyebrow {
+      width: fit-content;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 7px 11px;
+      border: 1px solid rgba(103, 232, 249, 0.32);
+      border-radius: 999px;
+      color: #cffafe;
+      background: rgba(8, 47, 73, 0.26);
+      font-size: 0.78rem;
+      font-weight: 850;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--green);
+      box-shadow: 0 0 18px rgba(134, 239, 172, 0.85);
     }
 
     h1 {
-      font-size: 2.5rem; font-weight: 700;
-      background: linear-gradient(135deg, #fff, #c084fc);
-      -webkit-background-clip: text; background-clip: text; color: transparent;
-      margin-bottom: 0.5rem;
+      max-width: 11ch;
+      margin: 18px 0 18px;
+      font-size: clamp(3rem, 8vw, 6.8rem);
+      line-height: 0.91;
+      letter-spacing: 0;
     }
 
-    .subtitle { color: var(--muted); font-size: 1rem; }
+    .hero-copy {
+      max-width: 62ch;
+      margin: 0;
+      color: var(--soft);
+      font-size: clamp(1.02rem, 1.9vw, 1.22rem);
+      line-height: 1.72;
+    }
 
-    /* ─── GRID ──────────────────────────────── */
-    /* Fixed: was repeat(auto-fit, minmax(320px,1fr)) which caused the WIP card
-       to span full width when it was the only item in the last row.
-       Now using a fixed 3-col grid that wraps cleanly. */
-    .gpt-grid {
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .button,
+    .button-secondary,
+    .tool-link,
+    .disabled-link,
+    .form-submit {
+      min-height: 46px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      border-radius: 999px;
+      font: inherit;
+      font-weight: 800;
+      text-decoration: none;
+      border: 0;
+      cursor: pointer;
+      transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease, border-color 180ms ease;
+    }
+
+    .button {
+      padding: 0 20px;
+      color: #06111f;
+      background: linear-gradient(135deg, var(--cyan), var(--violet) 58%, var(--gold));
+      box-shadow: 0 18px 38px rgba(0, 0, 0, 0.28);
+    }
+
+    .button-secondary {
+      padding: 0 18px;
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--line);
+    }
+
+    .button:hover,
+    .button-secondary:hover,
+    .tool-link:hover,
+    .form-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 34px rgba(0, 0, 0, 0.24);
+    }
+
+    .hero-panel {
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 22px;
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.035));
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.24);
+    }
+
+    .panel-title {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 850;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .stats {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1.8rem;
-      margin-bottom: 1.8rem;
+      gap: 10px;
+      margin-bottom: 18px;
     }
 
-    /* ─── CARD ──────────────────────────────── */
-    .gpt-card {
-      background: var(--surface);
-      backdrop-filter: blur(10px);
-      border-radius: 1.5rem;
-      padding: 1.8rem;
-      border: 1px solid var(--border);
-      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
-      display: flex; flex-direction: column; /* so footer link sticks to bottom */
+    .stat {
+      min-height: 88px;
+      padding: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.11);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.06);
     }
 
-    .gpt-card:hover {
-      transform: translateY(-5px);
-      border-color: rgba(124,58,237,0.5);
-      box-shadow: 0 20px 35px -15px rgba(0,0,0,0.5);
-    }
-
-    /* WIP card */
-    .gpt-card.wip-card {
-      opacity: 0.85;
-      border: 1px dashed rgba(124,58,237,0.5);
-    }
-
-    .card-icon {
-      width: 55px; height: 55px;
-      background: linear-gradient(135deg, var(--purple), var(--purple-hi));
-      border-radius: 1rem;
-      display: flex; align-items: center; justify-content: center;
+    .stat strong {
+      display: block;
+      color: var(--ink);
       font-size: 1.8rem;
-      margin-bottom: 1.2rem;
-      flex-shrink: 0;
+      line-height: 1;
     }
 
-    .card-icon.grey { background: linear-gradient(135deg, #4b5563, #6b7280); }
-
-    .gpt-name {
-      font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem;
-      display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;
+    .stat span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      line-height: 1.35;
     }
 
-    .wip-badge {
-      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.05em;
-      background: #f59e0b; color: #1a1a2e;
-      padding: 0.15rem 0.55rem; border-radius: 20px;
+    .notice {
+      margin: 0;
+      color: #dbeafe;
+      font-size: 0.92rem;
+      line-height: 1.6;
     }
 
-    .gpt-desc {
-      color: #cbd5e1; font-size: 0.9rem; line-height: 1.5;
-      margin-bottom: 1.2rem; flex: 1; /* pushes link to bottom */
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 20px;
+      margin: 36px 0 18px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(1.7rem, 4vw, 2.45rem);
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+
+    .section-head p {
+      max-width: 44ch;
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .assistant-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .tool-card {
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 20px;
+      background: linear-gradient(145deg, var(--panel-strong), var(--panel));
+      box-shadow: 0 18px 54px rgba(0, 0, 0, 0.18);
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+    }
+
+    .tool-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(103, 232, 249, 0.34);
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.07));
+    }
+
+    .tool-card.is-muted {
+      border-style: dashed;
+      opacity: 0.86;
+    }
+
+    .tool-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .icon {
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      color: #06111f;
+      background: linear-gradient(135deg, var(--cyan), var(--blue));
+      flex: 0 0 auto;
+    }
+
+    .icon.violet { background: linear-gradient(135deg, var(--violet), #f0abfc); }
+    .icon.green { background: linear-gradient(135deg, var(--green), var(--cyan)); }
+    .icon.gold { background: linear-gradient(135deg, var(--gold), #fda4af); }
+    .icon.gray { color: var(--soft); background: rgba(255, 255, 255, 0.11); }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 0 10px;
+      border-radius: 999px;
+      color: #cffafe;
+      background: rgba(8, 47, 73, 0.28);
+      border: 1px solid rgba(103, 232, 249, 0.22);
+      font-size: 0.74rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .tag.warning {
+      color: #fef3c7;
+      background: rgba(146, 64, 14, 0.22);
+      border-color: rgba(252, 211, 77, 0.24);
+    }
+
+    .tool-card h3 {
+      margin: 0;
+      font-size: 1.18rem;
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+
+    .description {
+      margin: 10px 0 18px;
+      color: #cbd5e1;
+      line-height: 1.58;
+      font-size: 0.95rem;
+      flex: 1;
     }
 
     .features {
-      list-style: none; margin-bottom: 1.5rem;
+      display: grid;
+      gap: 9px;
+      list-style: none;
+      margin: 0 0 20px;
+      padding: 0;
+      color: var(--soft);
+      font-size: 0.9rem;
     }
 
     .features li {
-      font-size: 0.85rem; color: #a78bfa;
-      margin-bottom: 0.5rem;
-      display: flex; align-items: center; gap: 0.5rem;
+      display: flex;
+      gap: 9px;
+      align-items: flex-start;
+      line-height: 1.45;
     }
 
-    .features li i { font-size: 0.7rem; color: var(--green); }
-    .features li i.fa-tools,
-    .features li i.fa-code-branch,
-    .features li i.fa-lightbulb { color: var(--muted); }
+    .features svg {
+      margin-top: 2px;
+      color: var(--green);
+      flex: 0 0 auto;
+    }
 
-    /* Fixed: gpt-link was only styled for <a> but the WIP card used a <div>.
-       Now using .gpt-link for real links and .gpt-link-disabled for placeholders. */
-    .gpt-link, .gpt-link-disabled {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      background: rgba(124,58,237,0.2);
-      padding: 0.7rem 1.2rem;
-      border-radius: 2rem;
-      font-weight: 500; font-size: 0.9rem;
-      border: 1px solid rgba(124,58,237,0.3);
-      text-decoration: none;
+    .tool-link,
+    .disabled-link {
       width: fit-content;
       margin-top: auto;
+      padding: 0 16px;
+      font-size: 0.92rem;
     }
 
-    .gpt-link { color: #c084fc; transition: background 0.2s, color 0.2s, border-color 0.2s; cursor: pointer; }
-    .gpt-link:hover { background: var(--purple); color: white; border-color: var(--purple); }
-
-    .gpt-link-disabled { color: var(--muted); cursor: default; }
-
-    /* ─── BACK LINK ─────────────────────────── */
-    .back-link { text-align: center; margin-top: 2rem; }
-    .back-link a {
-      color: var(--muted); text-decoration: none;
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      transition: color 0.2s;
-    }
-    .back-link a:hover { color: #c084fc; }
-
-    /* ─── FEEDBACK FORM ─────────────────────── */
-    .feedback-card {
-      background: var(--surface);
-      backdrop-filter: blur(10px);
-      border-radius: 1.5rem;
-      padding: 1.8rem;
-      margin: 2rem 0 1rem;
-      border: 1px solid var(--border);
+    .tool-link {
+      color: #06111f;
+      background: linear-gradient(135deg, var(--cyan), var(--violet));
     }
 
-    .feedback-header {
-      display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.2rem;
+    .disabled-link {
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid var(--line);
+      cursor: default;
     }
 
-    .feedback-header i { color: #c084fc; font-size: 1.5rem; }
-    .feedback-header h3 { color: white; font-weight: 600; }
-
-    .feedback-desc { color: #cbd5e1; font-size: 0.9rem; margin-bottom: 1.2rem; }
-
-    /* Fixed: <form> tag used as the form element; this is valid HTML — no changes
-       needed here since this isn't inside a React artifact. */
-    .form-row {
+    .feedback {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem; margin-bottom: 1rem;
+      grid-template-columns: minmax(0, 0.8fr) minmax(300px, 1.2fr);
+      gap: 18px;
+      align-items: start;
+      margin-top: 24px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.065);
     }
 
-    .form-select, .form-textarea {
-      padding: 0.7rem; border-radius: 0.8rem;
-      border: 1px solid rgba(255,255,255,0.2);
-      background: rgba(0,0,0,0.3); color: white;
-      font-size: 0.9rem; font-family: inherit;
+    .feedback h2 { margin-bottom: 12px; }
+
+    .feedback p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    select,
+    textarea {
       width: 100%;
-    }
-
-    .form-textarea { resize: vertical; margin-bottom: 1rem; }
-
-    /* Fixed: submit button had no type="submit" fallback class — using .form-submit */
-    .form-submit {
-      background: linear-gradient(135deg, var(--purple), var(--purple-hi));
-      border: none; padding: 0.7rem 1.5rem; border-radius: 2rem;
-      color: white; font-weight: 600; cursor: pointer; width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 14px;
+      color: var(--ink);
+      background: rgba(0, 0, 0, 0.26);
+      font: inherit;
       font-size: 0.95rem;
-      transition: opacity 0.2s, transform 0.15s;
-    }
-    .form-submit:hover { opacity: 0.88; transform: translateY(-1px); }
-
-    .form-note { color: #6b7280; font-size: 0.7rem; margin-top: 0.8rem; text-align: center; }
-
-    /* ─── FOOTER ────────────────────────────── */
-    .footer {
-      text-align: center; margin-top: 3rem; padding-top: 2rem;
-      border-top: 1px solid rgba(255,255,255,0.05);
-      font-size: 0.8rem; color: #6b7280;
-    }
-    .footer .heart { color: #f43f5e; }
-
-    /* ─── RESPONSIVE ────────────────────────── */
-    @media (max-width: 900px) {
-      .gpt-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
-    @media (max-width: 600px) {
-      h1 { font-size: 1.8rem; }
-      .gpt-grid { grid-template-columns: 1fr; gap: 1.2rem; }
-      .gpt-card { padding: 1.5rem; }
+    select {
+      min-height: 48px;
+      padding: 0 13px;
+    }
+
+    textarea {
+      display: block;
+      min-height: 96px;
+      margin: 12px 0;
+      padding: 13px;
+      resize: vertical;
+    }
+
+    .form-submit {
+      width: 100%;
+      color: #06111f;
+      background: linear-gradient(135deg, var(--cyan), var(--violet) 60%, var(--gold));
+    }
+
+    .form-note {
+      display: block;
+      margin-top: 10px;
+      color: #7e8da6;
+      font-size: 0.78rem;
+      text-align: center;
+    }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+      padding-top: 22px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      color: #7e8da6;
+      font-size: 0.88rem;
+    }
+
+    svg { flex: 0 0 auto; }
+
+    @media (max-width: 940px) {
+      .hero,
+      .feedback {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-panel {
+        max-width: 620px;
+      }
+
+      .assistant-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 660px) {
+      .site {
+        width: min(100% - 24px, 1120px);
+        padding-top: 18px;
+      }
+
+      .topbar {
+        align-items: flex-start;
+        padding-bottom: 34px;
+      }
+
+      .nav-link span {
+        display: none;
+      }
+
+      h1 {
+        font-size: clamp(2.75rem, 16vw, 4.8rem);
+      }
+
+      .stats,
+      .assistant-grid,
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-head {
+        display: block;
+      }
+
+      .section-head p {
+        margin-top: 10px;
+      }
+
+      .button,
+      .button-secondary,
+      .tool-link,
+      .disabled-link {
+        width: 100%;
+      }
+
+      .hero-actions {
+        align-items: stretch;
+      }
     }
   </style>
 </head>
 <body>
-<div class="container">
+  <div class="site">
+    <header class="topbar">
+      <a class="brand" href="https://zijun198.github.io/" aria-label="ZiJun main hub">
+        <span class="brand-mark" aria-hidden="true">
+          <svg width="23" height="23" viewBox="0 0 24 24"><path d="M8 8 4 12l4 4M16 8l4 4-4 4M14 4l-4 16" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span>ZiJun AI</span>
+      </a>
+      <a class="nav-link" href="https://zijun198.github.io/">
+        <svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18 9 12l6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Main Hub</span>
+      </a>
+    </header>
 
-  <!-- HEADER -->
-  <div class="header">
-    <div class="logo"><i class="fas fa-robot"></i></div>
-    <h1>My AI Assistants</h1>
-    <p class="subtitle">Custom GPTs built to solve real problems — faster, smarter, no manual math.</p>
+    <main>
+      <section class="hero" aria-labelledby="page-title">
+        <div>
+          <div class="eyebrow"><span class="dot" aria-hidden="true"></span> Public AI directory</div>
+          <h1 id="page-title">Practical AI Assistants</h1>
+          <p class="hero-copy">A public collection of custom GPTs built for real workflows: quotes, work orders, writing drafts, portfolio navigation, and quick calculations. Pick a tool, open it in ChatGPT, and try it with your own task.</p>
+          <div class="hero-actions">
+            <a class="button" href="#assistants">
+              Browse assistants
+              <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M19 12l-7 7-7-7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <a class="button-secondary" href="#feedback">Leave feedback</a>
+          </div>
+        </div>
+
+        <aside class="hero-panel" aria-label="Page summary">
+          <p class="panel-title">What is inside</p>
+          <div class="stats">
+            <div class="stat"><strong>5</strong><span>available custom GPTs</span></div>
+            <div class="stat"><strong>1</strong><span>new tool in progress</span></div>
+            <div class="stat"><strong>10s</strong><span>anonymous feedback form</span></div>
+          </div>
+          <p class="notice">These assistants are experimental tools. Please check important outputs yourself, especially pricing, money, and business decisions.</p>
+        </aside>
+      </section>
+
+      <section id="assistants" aria-labelledby="assistants-title">
+        <div class="section-head">
+          <div>
+            <h2 id="assistants-title">Choose An Assistant</h2>
+          </div>
+          <p>Each card explains what the GPT is for, when to use it, and what to expect before opening ChatGPT.</p>
+        </div>
+
+        <div class="assistant-grid">
+          <article class="tool-card">
+            <div class="tool-top">
+              <div class="icon gold" aria-hidden="true">
+                <svg width="25" height="25" viewBox="0 0 24 24"><path d="M6 7h12l-2 12H8L6 7ZM9 7a3 3 0 0 1 6 0M8 11h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <span class="tag warning">Gold calculator</span>
+            </div>
+            <h3>tngemas Kira</h3>
+            <p class="description">A focused calculator for TnG eMas style gold holding checks. Enter your grams, average buy price, and current buy/sell prices to estimate breakeven and alert points.</p>
+            <ul class="features">
+              <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Calculate breakeven, estimated profit, and loss range</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Useful for quick RM/g scenario checks</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Not financial advice. Use your own judgement.</li>
+            </ul>
+            <a class="tool-link" href="https://chatgpt.com/g/g-6a0811925cbc81919343372ff6c06f09-tngemas-kira" target="_blank" rel="noopener">
+              Open GPT
+              <svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </article>
+
+          <article class="tool-card">
+            <div class="tool-top">
+              <div class="icon violet" aria-hidden="true">
+                <svg width="25" height="25" viewBox="0 0 24 24"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16v4ZM13 7l4 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <span class="tag">Writing</span>
+            </div>
+            <h3>Chinese Copywriting Assistant</h3>
+            <p class="description">A draft helper for Chinese practical writing and copywriting. Use it to shape rough ideas into clearer messages, descriptions, captions, and announcement-style drafts.</p>
+            <ul class="features">
+              <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Helps start from messy notes</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Supports public-facing wording</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Good for drafts before final editing</li>
+            </ul>
+            <a class="tool-link" href="https://chatgpt.com/g/g-69f5f018dad48191ae86ca2c40c6c9d7-ying-yong-wen-an-zhu-shou-cao-gao" target="_blank" rel="noopener">
+              Open GPT
+              <svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </article>
+
+          <article class="tool-card">
+            <div class="tool-top">
+              <div class="icon" aria-hidden="true">
+                <svg width="25" height="25" viewBox="0 0 24 24"><path d="M12 3l8 6-8 6-8-6 8-6ZM4 15l8 6 8-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <span class="tag">Navigation</span>
+            </div>
+            <h3>ZiJun HUB Assistant</h3>
+            <p class="description">A guide for visitors who want to find projects, tools, links, and portfolio materials from the ZiJun hub without hunting through everything manually.</p>
+            <ul class="features">
+              <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Find portfolio and website links</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Open calculators and tools</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Simple guide for public visitors</li>
+            </ul>
+            <a class="tool-link" href="https://chatgpt.com/g/g-69b67a347e488191a4681abb18776a44-zijun-hub-assistant" target="_blank" rel="noopener">
+              Open GPT
+              <svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </article>
+
+          <article class="tool-card">
+            <div class="tool-top">
+              <div class="icon green" aria-hidden="true">
+                <svg width="25" height="25" viewBox="0 0 24 24"><path d="M5 5h14v10H8l-3 3V5ZM8 9h8M8 12h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <span class="tag">Operations</span>
+            </div>
+            <h3>KH Workorder</h3>
+            <p class="description">A WhatsApp-style work order assistant for signage jobs. It helps structure order details, job status, and workflow information in a faster chat format.</p>
+            <ul class="features">
+              <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Create cleaner work order details</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Track job status and notes</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Designed for KH signage workflow</li>
+            </ul>
+            <a class="tool-link" href="https://chatgpt.com/g/g-69b6129fe1108191afeb3d47d42fa88e-kh-workorder" target="_blank" rel="noopener">
+              Open GPT
+              <svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </article>
+
+          <article class="tool-card">
+            <div class="tool-top">
+              <div class="icon" aria-hidden="true">
+                <svg width="25" height="25" viewBox="0 0 24 24"><path d="M7 3h10v18H7V3ZM10 7h4M10 11h4M10 15h1M14 15h1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <span class="tag">Quotation</span>
+            </div>
+            <h3>KH AI Assistant for Quote</h3>
+            <p class="description">A quotation assistant for signage jobs including banners, tarpaulin, LED letters, customer tiers, minimum charges, and design fees.</p>
+            <ul class="features">
+              <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Estimate signage pricing faster</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Supports Standard, Regular, and VIP tiers</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Always review before sending to customers</li>
+            </ul>
+            <a class="tool-link" href="https://chatgpt.com/g/g-69b66d402d808191b150134427fb1116-kh-ai-assistant-for-quote" target="_blank" rel="noopener">
+              Open GPT
+              <svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </article>
+
+          <article class="tool-card is-muted">
+            <div class="tool-top">
+              <div class="icon gray" aria-hidden="true">
+                <svg width="25" height="25" viewBox="0 0 24 24"><path d="M12 6v6l4 2M5 3h14M7 21h10M8 3v3a4 4 0 0 0 8 0V3M8 21v-3a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <span class="tag warning">Coming soon</span>
+            </div>
+            <h3>Next Assistant</h3>
+            <p class="description">Another practical helper is being shaped. The goal is the same: small, useful, and built around a real workflow instead of a vague demo.</p>
+            <ul class="features">
+              <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M12 6v6l4 2" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Currently in progress</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M12 6v6l4 2" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Public launch later</li>
+              <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="M12 6v6l4 2" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Feedback helps decide what to build</li>
+            </ul>
+            <span class="disabled-link">Stay tuned</span>
+          </article>
+        </div>
+      </section>
+
+      <section class="feedback" id="feedback" aria-labelledby="feedback-title">
+        <div>
+          <h2 id="feedback-title">Help Improve These Tools</h2>
+          <p>Tell me which assistant you tried and whether it helped. No email is required, and short feedback is enough.</p>
+        </div>
+
+        <form action="https://formspree.io/f/mlgagyzk" method="POST">
+          <div class="form-grid">
+            <select name="which_ai" required aria-label="Which AI did you try?">
+              <option value="" disabled selected>Which AI did you try?</option>
+              <option value="tngemas Kira">tngemas Kira</option>
+              <option value="Chinese Copywriting Assistant">Chinese Copywriting Assistant</option>
+              <option value="ZiJun HUB Assistant">ZiJun HUB Assistant</option>
+              <option value="KH Workorder">KH Workorder</option>
+              <option value="KH AI Assistant for Quote">KH AI Assistant for Quote</option>
+              <option value="Just browsing / Not tried yet">Just browsing / Not tried yet</option>
+            </select>
+
+            <select name="rating" required aria-label="Was it helpful?">
+              <option value="" disabled selected>Was it helpful?</option>
+              <option value="Very helpful">Very helpful</option>
+              <option value="Somewhat helpful">Somewhat helpful</option>
+              <option value="Not helpful">Not helpful</option>
+            </select>
+          </div>
+
+          <textarea name="feedback" rows="4" placeholder="What worked? What felt confusing? What should I build next?"></textarea>
+
+          <button type="submit" class="form-submit">
+            Send Feedback
+            <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="m4 12 16-8-5 16-3-7-8-1Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <span class="form-note">Anonymous. No email required.</span>
+        </form>
+      </section>
+    </main>
+
+    <footer>
+      <span>Built by ZiJun with AI-assisted workflows.</span>
+      <span>Experimental tools. Please verify important outputs.</span>
+    </footer>
   </div>
-
-  <!-- GPT GRID -->
-  <div class="gpt-grid">
-
-        <!-- GPT 5: tngemas Kira -->
-    <div class="gpt-card">
-      <div class="card-icon"><i class="fas fa-comments-dollar"></i></div>
-      <div class="gpt-name">tngemas Kira <span style="font-size:0.7rem;color:#a78bfa;font-weight:400;"></span></div>
-      <div class="gpt-desc">Specific for tngemas calculation. Currency: RM. No thinking needed. Input your current holding (g) and average buy price (RM/g). It will calculate your recovery point — for example, if you want to buy 3g more to breakeven and prevent loss. And that's it. It just calculates.</div>
-      <ul class="features">
-        <li><i class="fas fa-check-circle"></i> Tell me: your g + buy price</li>
-        <li><i class="fas fa-check-circle"></i> Copy & paste current Sell RM & Buy RM</li>
-        <li><i class="fas fa-check-circle"></i> I give you: sell alert, breakeven, profit/loss</li>
-        <li><i class="fas fa-check-circle"></i> Use at your own risk. No financial advice.</li>
-      </ul>
-      <a href="https://chatgpt.com/g/g-6a0811925cbc81919343372ff6c06f09-tngemas-kira" class="gpt-link" target="_blank" rel="noopener">
-        <i class="fa fa-check-circle"></i> Try it →
-      </a>
-    </div>
-    <!-- GPT 4: 应用文案助手 (NEW) -->
-    <div class="gpt-card">
-      <div class="card-icon"><i class="fas fa-pen-nib"></i></div>
-      <div class="gpt-name">应用文案助手 <span style="font-size:0.7rem;color:#a78bfa;font-weight:400;">(Copywriting Assistant)</span></div>
-      <div class="gpt-desc">用于起草内容的AI文案助手——更智慧、更高效地撰写，每次都能精准把握恰当语气。</div>
-      <ul class="features">
-        <li><i class="fas fa-check-circle"></i> 起草申请文案及描述</li>
-        <li><i class="fas fa-check-circle"></i> 针对不同受众进行语气适配写作</li>
-        <li><i class="fas fa-check-circle"></i> 支持中文（简体）</li>
-        <li><i class="fas fa-check-circle"></i> 快速起草→精细润色工作流程</li>
-      </ul>
-      <a href="https://chatgpt.com/g/g-69f5f018dad48191ae86ca2c40c6c9d7-ying-yong-wen-an-zhu-shou-cao-gao" class="gpt-link" target="_blank" rel="noopener">
-        <i class="fa fa-check-circle"></i> Try it →
-      </a>
-    </div>
-
-    <!-- GPT 2: ZiJun HUB Assistant -->
-    <div class="gpt-card">
-      <div class="card-icon"><i class="fas fa-compass"></i></div>
-      <div class="gpt-name">ZiJun HUB Assistant</div>
-      <div class="gpt-desc">Portfolio guide — helps visitors find projects, tools, and links to my work.</div>
-      <ul class="features">
-        <li><i class="fas fa-check-circle"></i> Navigate portfolios (Google Drive / Website)</li>
-        <li><i class="fas fa-check-circle"></i> Open calculators &amp; tools</li>
-        <li><i class="fas fa-check-circle"></i> Return to main HUB</li>
-        <li><i class="fas fa-check-circle"></i> Simple, no extra fluff</li>
-      </ul>
-      <a href="https://chatgpt.com/g/g-69b67a347e488191a4681abb18776a44-zijun-hub-assistant" class="gpt-link" target="_blank" rel="noopener">
-        <i class="fa fa-check-circle"></i> Try it →
-      </a>
-    </div>
-
-    <!-- GPT 3: KH Workorder - WhatsApp -->
-    <div class="gpt-card">
-      <div class="card-icon"><i class="fab fa-whatsapp"></i></div>
-      <div class="gpt-name">KH Workorder — WhatsApp</div>
-      <div class="gpt-desc">WhatsApp-based work order assistant — helps create, track, and manage job orders directly in chat.</div>
-      <ul class="features">
-        <li><i class="fas fa-check-circle"></i> Create new work orders via WhatsApp</li>
-        <li><i class="fas fa-check-circle"></i> Track job status</li>
-        <li><i class="fas fa-check-circle"></i> Fast order entry for signage jobs</li>
-        <li><i class="fas fa-check-circle"></i> Integrated with KH workflow</li>
-      </ul>
-      <a href="https://chatgpt.com/g/g-69b6129fe1108191afeb3d47d42fa88e-kh-workorder" class="gpt-link" target="_blank" rel="noopener">
-        <i class="fa fa-check-circle"></i> Try it →
-      </a>
-    </div>
-
-    <!-- GPT 1: KH AI Assistant for Quote -->
-    <div class="gpt-card">
-      <div class="card-icon"><i class="fas fa-calculator"></i></div>
-      <div class="gpt-name">KH AI Assistant for Quote</div>
-      <div class="gpt-desc">Sales assistant that calculates signage quotations instantly — banner, LED, tarpaulin, custom materials.</div>
-      <ul class="features">
-        <li><i class="fas fa-check-circle"></i> Tarpaulin Solvent / UV</li>
-        <li><i class="fas fa-check-circle"></i> 3D LED letters with rounding</li>
-        <li><i class="fas fa-check-circle"></i> 3 customer tiers (Standard / Regular / VIP)</li>
-        <li><i class="fas fa-check-circle"></i> Minimum charges &amp; design fees</li>
-      </ul>
-      <a href="https://chatgpt.com/g/g-69b66d402d808191b150134427fb1116-kh-ai-assistant-for-quote" class="gpt-link" target="_blank" rel="noopener">
-        <i class="fa fa-check-circle"></i> Try it →
-      </a>
-    </div>
-
-    <!-- WIP Card -->
-    <div class="gpt-card wip-card">
-      <div class="card-icon grey"><i class="fas fa-hard-hat"></i></div>
-      <div class="gpt-name">Coming Soon <span class="wip-badge">WIP</span></div>
-      <div class="gpt-desc">Another AI assistant is being built. Something useful, something practical — just not ready yet.</div>
-      <ul class="features">
-        <li><i class="fas fa-tools"></i> Under construction</li>
-        <li><i class="fas fa-code-branch"></i> Work in progress</li>
-        <li><i class="fas fa-lightbulb"></i> Idea stage → prototype → launch</li>
-      </ul>
-      <div class="gpt-link-disabled">
-        <i class="fas fa-hourglass-half"></i> Stay tuned
-      </div>
-    </div>
-
-  </div><!-- /gpt-grid -->
-
-  <!-- BACK LINK -->
-  <div class="back-link">
-    <a href="https://zijun198.github.io/">
-      <i class="fas fa-arrow-left"></i> Back to Main HUB
-    </a>
-  </div>
-
-  <!-- FEEDBACK FORM -->
-  <div class="feedback-card">
-    <div class="feedback-header">
-      <i class="fas fa-comment-dots"></i>
-      <h3>Help Me Improve</h3>
-    </div>
-    <p class="feedback-desc">Which AI did you try? Was it helpful? Your feedback is anonymous and helps me make these tools better.</p>
-
-    <form action="https://formspree.io/f/mlgagyzk" method="POST">
-      <div class="form-row">
-        <select name="which_ai" required class="form-select">
-          <option value="" disabled selected>Which AI did you try?</option>
-          <option value="KH AI Assistant for Quote">KH AI Assistant for Quote</option>
-          <option value="ZiJun HUB Assistant">ZiJun HUB Assistant</option>
-          <option value="KH Workorder - WhatsApp">KH Workorder — WhatsApp</option>
-          <option value="Copywriting Assistant">应用文案助手 (Copywriting Assistant)</option>
-          <option value="Just browsing / Not tried yet">Just browsing / Not tried yet</option>
-        </select>
-
-        <select name="rating" required class="form-select">
-          <option value="" disabled selected>Was it helpful?</option>
-          <option value="Very helpful">👍 Very helpful</option>
-          <option value="Somewhat helpful">🤔 Somewhat helpful</option>
-          <option value="Not helpful">👎 Not helpful</option>
-        </select>
-      </div>
-
-      <textarea name="feedback" rows="2" class="form-textarea"
-        placeholder="What worked? What didn't? Suggestions? (optional)"></textarea>
-
-      <button type="submit" class="form-submit">
-        <i class="fas fa-paper-plane"></i> Send Feedback
-      </button>
-    </form>
-    <p class="form-note">No email required. Anonymous. Takes 10 seconds.</p>
-  </div>
-
-  <!-- FOOTER -->
-  <div class="footer">
-    <p>Built with <i class="fas fa-heart heart"></i> and AI — 4 custom GPTs, 0 manual math</p>
-  </div>
-
-</div>
 </body>
 </html>
