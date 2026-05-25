@@ -387,6 +387,17 @@
       font-size: 0.92rem;
     }
 
+    .tool-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: auto;
+    }
+
+    .tool-actions .tool-link {
+      margin-top: 0;
+    }
+
     .tool-link {
       color: #06111f;
       background: linear-gradient(135deg, var(--cyan), var(--violet));
@@ -603,10 +614,16 @@
               <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Supports image, video, and music prompt direction</li>
               <li><svg width="16" height="16" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Prototype tool. Results are meant as editable first drafts.</li>
             </ul>
-            <a class="tool-link" href="https://gemini.google.com/gem/1F7Wq_ymCECrdfvo2YRsDBGMS2aTIeWym?usp=sharing" target="_blank" rel="noopener">
-              Open Gem
-              <svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </a>
+            <div class="tool-actions">
+              <a class="tool-link" href="https://gemini.google.com/gem/1F7Wq_ymCECrdfvo2YRsDBGMS2aTIeWym?usp=sharing" target="_blank" rel="noopener">
+                Open Gem
+                <svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </a>
+              <a class="tool-link" href="https://pacguy-mtk.github.io/quickpromptgeneratordemo/">
+                Demo
+                <svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </a>
+            </div>
           </article>
           
           <article class="tool-card">
