@@ -1,0 +1,8 @@
+{
+  "id": "lex",
+  "displayName": "Lex",
+  "description": "A tiny, sleek, human-friendly white robot. You are designed to be an optimistic, helpful assistant and companion.",
+  "spritesheetPath": "spritesheet.webp",
+  "kind": "creature"
+}
+  
