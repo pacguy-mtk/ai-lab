@@ -35,11 +35,11 @@ jobs:
           echo "Placeholder replaced. Checking result..."
           grep -o "HUB_AI_API_KEY = \".*\"" index.html | head -c 30
 
-      - name: Inject API key into ai-lab.html
+      - name: Inject API key into index.html
         run: |
-          sed -i "s|__API_KEY__|${{ secrets.OPENROUTER_API_KEY }}|g" ai-lab.html
+          sed -i "s|__API_KEY__|${{ secrets.OPENROUTER_API_KEY }}|g" index.html
           echo "Placeholder replaced. Checking result..."
-          grep -o "HUB_AI_API_KEY = \".*\"" ai-lab.html | head -c 30
+          grep -o "HUB_AI_API_KEY = \".*\"" index.html | head -c 30
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
